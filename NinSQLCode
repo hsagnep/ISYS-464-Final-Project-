@@ -9,14 +9,6 @@ CREATE TABLE IF NOT EXISTS Customer (
     Customer_Address VARCHAR(200),
 CONSTRAINT Customer_PK PRIMARY KEY (CustomerID)
 );
-
-CREATE TABLE IF NOT EXISTS Sales (
-    SalesID INT NOT NULL,
-    CustomerID INT NOT NULL,
-    RetailerID INT NOT NULL,
-CONSTRAINT Sales_PK PRIMARY KEY (SalesID),
-CONSTRAINT Sales_FK_1 FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
-CONSTRAINT Sales_FK_2 FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID));
     
 CREATE TABLE IF NOT EXISTS Retailer (
     RetailerID INT NOT NULL,
@@ -37,8 +29,8 @@ CREATE TABLE IF NOT EXISTS Products (
     Units_Sold INT,
     Product_Price FLOAT,
     Product_Inventory_Amt INT,
-CONSTRAINT Products_pk PRIMARY KEY (ProductID),
-CONSTRAINT Products_fk FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID)
+CONSTRAINT Products_PK PRIMARY KEY (ProductID),
+CONSTRAINT Products_FK FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID)
 );
 
 CREATE TABLE IF NOT EXISTS VideoGame (
@@ -136,8 +128,8 @@ CREATE TABLE IF NOT EXISTS PartTime (
 EmployeeID  INT NOT NULL,
 Part_Time_Hours INT,
 
-CONSTRAINT PartTime_PK primary key (EmployeeID),
-CONSTRAINT PartTime_FK foreign key (EmployeeID) references Employees (EmployeeID));
+CONSTRAINT PartTime_PK PRIMARY KEY (EmployeeID),
+CONSTRAINT PartTime_FK FOREIGN KEY (EmployeeID) references Employees (EmployeeID));
 
 CREATE TABLE IF NOT EXISTS FullTime (
 EmployeeID  INT NOT NULL,
@@ -161,6 +153,14 @@ Contract_Hours INT,
 CONSTRAINT ContractTime_PK PRIMARY KEY (EmployeeID),
 CONSTRAINT ContractTime_FK FOREIGN KEY (EmployeeID) references Employees(EmployeeID));
 
+CREATE TABLE IF NOT EXISTS Sales (
+    SalesID INT NOT NULL,
+    CustomerID INT NOT NULL,
+    RetailerID INT NOT NULL,
+CONSTRAINT Sales_PK PRIMARY KEY (SalesID),
+CONSTRAINT Sales_FK_1 FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+CONSTRAINT Sales_FK_2 FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID));
+
 
 
 -- Inserting Values
@@ -171,14 +171,6 @@ INSERT INTO Customer VALUES (359,'Newton','Johnson','5101072992','NewtonJohnson.
 INSERT INTO Customer VALUES (825,'Lynne','Healey','5101185956','LynneHealey.gmail.com','236 Valdez Plain Apt. 412 Danielfort, HI 67054');
 INSERT INTO Customer VALUES (548,'Robert','Stutzman','5101348471','RobertStutzman.gmail.com','56975 Moore Skyway Suite 883 South Tamaraberg, GA 39308');
 INSERT INTO Customer VALUES (781,'Judy','Hernandez','5101802079','JudyHernandez.gmail.com','73291 Douglas Path Apt. 350 East Jodyborough, ME 57276');
-
--- Sales
-INSERT INTO Sales VALUES (01, 917, 300);
-INSERT INTO Sales VALUES (02, 359, 100);
-INSERT INTO Sales VALUES(03, 825, 200);
-INSERT INTO Sales VALUES(04, 548, 400);
-INSERT INTO Sales VALUES(05, 781, 500);
-
 
 -- Retailer
 INSERT INTO Retailer VALUES (100, 'Walmart', 7500, 'West',5500,'1159 W A St, Hayward, CA 94541');
@@ -236,8 +228,9 @@ INSERT INTO InfoSystem VALUES (2505, 'IT security');
 INSERT INTO Employees VALUES (2001, 2501, 'Jeff Hoeffrey', 101365, 'Programmer', '2017-05-12', 'Full Time', 2001);
 INSERT INTO Employees VALUES (2002, 2503, 'Mandy Cortez', 87655, 'Consultant',  '2018-03-15', 'Full Time', 2002);
 INSERT INTO Employees VALUES (2003, 2502, 'Johnathan Trumes', 55374, 'Consultant', '2019-01-26', 'Part Time', 2002);
-INSERT INTO Employees VALUES (2004, 2504, 'Andrea Rudio', 86164, 'Analyst', '2018-12-26', 'Contract', 2005);
 INSERT INTO Employees VALUES (2005, 2505, 'Winnie Dapuh', 75194, 'Architect', '2019-12-26', 'Intership', 2005);
+INSERT INTO Employees VALUES (2004, 2504, 'Andrea Rudio', 86164, 'Analyst', '2018-12-26', 'Contract', 2005);
+
 
 --  Part Time Type
 INSERT INTO PartTime VALUES (2003, 24);
@@ -250,6 +243,14 @@ INSERT INTO Internship VALUES(2005, 'Bob Builder');
 
 -- Contract Type
 INSERT INTO Contract VALUES (2004, 12/24/2020);
+
+-- Sales
+INSERT INTO Sales VALUES (01, 917, 300);
+INSERT INTO Sales VALUES (02, 359, 100);
+INSERT INTO Sales VALUES(03, 825, 200);
+INSERT INTO Sales VALUES(04, 548, 400);
+INSERT INTO Sales VALUES(05, 781, 500);
+
 
 -- QUERIES
 
