@@ -1,0 +1,285 @@
+USE ISYSPROJ;
+-- Creating Tables
+CREATE TABLE IF NOT EXISTS Customer (
+    CustomerID INT NOT NULL,
+    First_Name VARCHAR(50),
+    Last_Name VARCHAR(50),
+    Phone_Number VARCHAR(50),
+    Email_Address VARCHAR(50),
+    Customer_Address VARCHAR(200),
+CONSTRAINT Customer_PK PRIMARY KEY (CustomerID)
+);
+
+CREATE TABLE IF NOT EXISTS Sales (
+    SalesID INT NOT NULL,
+    CustomerID INT NOT NULL,
+    RetailerID INT NOT NULL,
+CONSTRAINT Sales_PK PRIMARY KEY (SalesID),
+CONSTRAINT Sales_FK_1 FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+CONSTRAINT Sales_FK_2 FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID));
+    
+CREATE TABLE IF NOT EXISTS Retailer (
+    RetailerID INT NOT NULL,
+    Retailer_Name VARCHAR(30),
+    Retailer_Capacity INT,
+    Retailer_Region VARCHAR(10),
+    COGS FLOAT,
+    Retailer_Address VARCHAR(200),
+CONSTRAINT Retailer_PK PRIMARY KEY (RetailerID)
+);
+
+CREATE TABLE IF NOT EXISTS Products (
+    ProductID INT NOT NULL,
+    RetailerID INT NOT NULL,
+    Product_Type VARCHAR (20),
+    Serial_Number INT(30),
+    Product_Date DATE,
+    Units_Sold INT,
+    Product_Price FLOAT,
+    Product_Inventory_Amt INT,
+CONSTRAINT Products_pk PRIMARY KEY (ProductID),
+CONSTRAINT Products_fk FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID)
+);
+
+CREATE TABLE IF NOT EXISTS VideoGame (
+ProductID  INT NOT NULL,
+Rating VARCHAR(30),	
+Genre VARCHAR(30),
+
+CONSTRAINT Product_PK PRIMARY KEY (ProductID),
+CONSTRAINT Product_FK FOREIGN KEY (ProductID) REFERENCES Products(ProductID));
+
+CREATE TABLE IF NOT EXISTS Console (
+ProductID  INT NOT NULL,
+Memory_space VARCHAR(30),
+specialEdition VARCHAR(30),
+
+CONSTRAINT Console_PK PRIMARY KEY (ProductID),
+CONSTRAINT Console_FK FOREIGN KEY (ProductID) REFERENCES Products(ProductID));
+
+CREATE TABLE IF NOT EXISTS Apparel (
+ProductID  INT NOT NULL,
+Material VARCHAR(30),
+ApparelSize VARCHAR(30),
+
+CONSTRAINT Apparel_PK PRIMARY KEY (ProductID),
+CONSTRAINT Apparel_FK FOREIGN KEY (ProductID) REFERENCES Products(ProductID));
+
+CREATE TABLE IF NOT EXISTS Toy (
+ProductID  INT NOT NULL,
+Material VARCHAR(30),
+
+CONSTRAINT Toy_PK PRIMARY KEY (ProductID),
+CONSTRAINT Toy_FK FOREIGN KEY (ProductID) REFERENCES Products(ProductID));
+
+CREATE TABLE IF NOT EXISTS Manufacturer (
+    ManufacturerID INT NOT NULL,
+    ProductID int not null,
+    Manufacturer_Name VARCHAR(20),
+    Manufacturer_Address VARCHAR(50),
+    Overhead_Cost FLOAT,
+    Production_Time INT,
+    Production_Capactiy INT,
+CONSTRAINT Manufacturer_PK PRIMARY KEY (ManufacturerID),
+CONSTRAINT Manufacturer_FK FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);	
+
+CREATE TABLE IF NOT EXISTS Departments (
+    DepartmentID INT NOT NULL,
+    ManufacturerID INT NOT NULL,
+    Department_Manager_Name VARCHAR (20),
+    Department_Project VARCHAR(50),
+    Number_of_Employees INT,
+    Department_Type VARCHAR(20),
+    Department_Location VARCHAR(200),
+CONSTRAINT Department_PK PRIMARY KEY (DepartmentID),
+CONSTRAINT Department_FK FOREIGN KEY (ManufacturerID) REFERENCES Manufacturer(ManufacturerID)
+);
+
+CREATE TABLE IF NOT EXISTS Finance (
+DepartmentID  INT NOT NULL,
+Investments VARCHAR(30),
+
+CONSTRAINT Finance_PK PRIMARY KEY(DepartmentID),
+CONSTRAINT Finance_FK FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));
+
+CREATE TABLE IF NOT EXISTS Accounting (
+DepartmentID  INT NOT NULL,
+Budgeting VARCHAR(30),
+Auditing VARCHAR(30),
+
+CONSTRAINT Accounting_PK PRIMARY KEY (DepartmentID),
+CONSTRAINT Accounting_FK FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));
+
+CREATE TABLE IF NOT EXISTS InfoSystem (
+DepartmentID  INT NOT NULL,
+ProjectManagement VARCHAR(30),
+
+CONSTRAINT InfoSys_PK PRIMARY KEY (DepartmentID),
+CONSTRAINT InfoSys_FK FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));
+
+CREATE TABLE IF NOT EXISTS Employees (
+	   EmployeeID INT NOT NULL,
+        DepartmentID INT NOT NULL,
+        Employee_Name VARCHAR(30),
+        Employee_Salary INT,
+        Employee_Skill VARCHAR(20),
+        Employee_Hire_Date DATE,
+        Employee_Type VARCHAR(20),
+        ManagerID int not null,
+CONSTRAINT Employee_PK PRIMARY KEY (EmployeeID),
+CONSTRAINT Employee_FK FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+CONSTRAINT Manager_FK FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID)
+);
+
+CREATE TABLE IF NOT EXISTS PartTime (
+EmployeeID  INT NOT NULL,
+Part_Time_Hours INT,
+
+CONSTRAINT PartTime_PK primary key (EmployeeID),
+CONSTRAINT PartTime_FK foreign key (EmployeeID) references Employees (EmployeeID));
+
+CREATE TABLE IF NOT EXISTS FullTime (
+EmployeeID  INT NOT NULL,
+Full_Time_Hours INT,
+Benefits VARCHAR(3),
+
+CONSTRAINT FullTime_PK PRIMARY KEY (EmployeeID),
+CONSTRAINT FullTime_FK FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID));
+
+CREATE TABLE IF NOT EXISTS Internship (
+EmployeeID  INT NOT NULL,
+Mentor VARCHAR(30),
+
+CONSTRAINT InternTime_PK PRIMARY KEY (EmployeeID),
+CONSTRAINT InternTime_FK FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID));
+
+CREATE TABLE IF NOT EXISTS Contract (
+EmployeeID  INT NOT NULL,
+Contract_Hours INT,
+
+CONSTRAINT ContractTime_PK PRIMARY KEY (EmployeeID),
+CONSTRAINT ContractTime_FK FOREIGN KEY (EmployeeID) references Employees(EmployeeID));
+
+
+
+-- Inserting Values
+
+-- Customer
+INSERT INTO Customer VALUES (917,'Clifford','Williams','5101699192','CliffordWilliams.gmail.com','838 Austin River West Maria, MI 53982');
+INSERT INTO Customer VALUES (359,'Newton','Johnson','5101072992','NewtonJohnson.gmail.com','09843 Jamie Mountains South Susanmouth, ME 39834');
+INSERT INTO Customer VALUES (825,'Lynne','Healey','5101185956','LynneHealey.gmail.com','236 Valdez Plain Apt. 412 Danielfort, HI 67054');
+INSERT INTO Customer VALUES (548,'Robert','Stutzman','5101348471','RobertStutzman.gmail.com','56975 Moore Skyway Suite 883 South Tamaraberg, GA 39308');
+INSERT INTO Customer VALUES (781,'Judy','Hernandez','5101802079','JudyHernandez.gmail.com','73291 Douglas Path Apt. 350 East Jodyborough, ME 57276');
+
+-- Sales
+INSERT INTO Sales VALUES (01, 917, 300);
+INSERT INTO Sales VALUES (02, 359, 100);
+INSERT INTO Sales VALUES(03, 825, 200);
+INSERT INTO Sales VALUES(04, 548, 400);
+INSERT INTO Sales VALUES(05, 781, 500);
+
+
+-- Retailer
+INSERT INTO Retailer VALUES (100, 'Walmart', 7500, 'West',5500,'1159 W A St, Hayward, CA 94541');
+INSERT INTO Retailer VALUES (200, 'Target', 6300, 'East',5300,'2187 Shattuck Ave, Berkeley, CA 94704');
+INSERT INTO Retailer VALUES (300, 'Gamestop', 2000, 'West',1000, '40580 Albrae St, Fremont, CA 94538');
+INSERT INTO Retailer VALUES (400, 'Gamestop', 5000, 'East',4000,'2425 Claribel Rd, Riverbank, CA 95367');
+INSERT INTO Retailer VALUES (500, 'Best Buy', 8000, 'West',5900, '1717 Harrison St, San Francisco, CA 94103');
+
+-- Products
+INSERT INTO Products VALUES (846,100,'Video Game',977, '2017-05-12',624,59.99,159);
+INSERT INTO Products VALUES (900,200,'Console',857,'2018-03-15',998,300.0,394);
+INSERT INTO Products VALUES (226,300,'Apparel',751,'2019-01-26',977,20.0,512);
+INSERT INTO Products VALUES (830,400,'Toy',185,'2018-12-26',223,15.0,577);
+INSERT INTO Products VALUES (978,500,'Video Game',258,'2019-12-26',335,59.99,664);
+
+-- Video Game Type
+INSERT INTO VideoGame VALUES (846, 'Everyone', 'Strategy');
+INSERT INTO VideoGame VALUES (978, 'Teen', 'Action');
+
+-- Console Type 
+INSERT INTO Console VALUES (900, '1TB', 'Mario Kart');
+
+-- Apparel Type
+INSERT INTO Apparel VALUES (226, 'Cotton', 'Medium');
+
+-- Toy Type
+INSERT INTO Toy VALUES (830, 'Plastic Lego');
+
+-- Manufacturer 
+INSERT INTO Manufacturer VALUES (1001, 846, '1-Up Studio', 'Japan', 10000, 60, 20000);
+INSERT INTO Manufacturer VALUES (1002,900, 'iQue', 'China', 10000, 60, 20000);
+INSERT INTO Manufacturer VALUES (1003, 226, 'Monolith Soft', 'India', 10000, 60, 20000);
+INSERT INTO Manufacturer VALUES (1004, 830, 'NDcube', 'Cambodia', 10000, 60, 20000);
+INSERT INTO Manufacturer VALUES (1005, 978, 'Retro Studios', 'Vietnam', 10000, 60, 20000);
+
+-- Department
+INSERT INTO Departments VALUES (2501,1003,'Daniel Hopkins', 'Video games', 40, 'Accounting','1201 Fillmore St, San Francisco, CA 94115');
+INSERT INTO Departments VALUES (2502,1002,'Randy Mendez', 'Advertisement', 30, 'Finance','735 Battery St, San Francisco, CA 94111');
+INSERT INTO Departments VALUES (2503,1001,'Walter Winston', 'Advertisement', 40, 'Accounting','999 Van Ness Ave, San Francisco, CA 94109');
+INSERT INTO Departments VALUES (2504,1005,'Annabelle Fang', 'IT security', 20, 'Information Systems','450 10th St, San Francisco, CA 94103');
+INSERT INTO Departments VALUES (2505,1004,'Maria Rolts', 'IT security', 20, 'Information Systems','4400 Shellmound St, Emeryville, CA 94608');
+
+-- Accounting Type
+INSERT INTO Accounting VALUES (2501, '250000', 'Financial');
+INSERT INTO Accounting VALUES (2503, '400000', 'Compliance');
+
+-- Finance Type
+INSERT INTO Finance VALUES (2502, 'Third Party Company');
+
+-- Info System Type
+INSERT INTO InfoSystem VALUES (2504, 'IT security');
+INSERT INTO InfoSystem VALUES (2505, 'IT security');
+
+-- Employee
+INSERT INTO Employees VALUES (2001, 2501, 'Jeff Hoeffrey', 101365, 'Programmer', '2017-05-12', 'Full Time', 2001);
+INSERT INTO Employees VALUES (2002, 2503, 'Mandy Cortez', 87655, 'Consultant',  '2018-03-15', 'Full Time', 2002);
+INSERT INTO Employees VALUES (2003, 2502, 'Johnathan Trumes', 55374, 'Consultant', '2019-01-26', 'Part Time', 2002);
+INSERT INTO Employees VALUES (2004, 2504, 'Andrea Rudio', 86164, 'Analyst', '2018-12-26', 'Contract', 2005);
+INSERT INTO Employees VALUES (2005, 2505, 'Winnie Dapuh', 75194, 'Architect', '2019-12-26', 'Intership', 2005);
+
+--  Part Time Type
+INSERT INTO PartTime VALUES (2003, 24);
+
+-- Full Time Type
+INSERT FullTime VALUES (2001, 40, 'Yes');
+
+-- Intern Type
+INSERT INTO Internship VALUES(2005, 'Bob Builder');
+
+-- Contract Type
+INSERT INTO Contract VALUES (2004, 12/24/2020);
+
+-- QUERIES
+
+-- Query 1
+SELECT RetailerID, Retailer_Name, COGS
+from Retailer
+WHERE (COGS BETWEEN 3500 AND 5400);
+
+-- Query 2
+SELECT Products.ProductID, Units_sold, Product_Type, Genre
+FROM Products, VideoGame
+WHERE Product_Type = 'Video Game' AND Products.ProductID = videogame.ProductID;
+
+-- Query 3 
+SELECT Customer.customerID, First_Name, SalesID, Retailer.RetailerID, Retailer_Name
+FROM Customer, Sales, Retailer
+WHERE Customer.CustomerID = Sales.CustomerID 
+AND Sales.RetailerID = Retailer.RetailerID
+AND Retailer_Name LIKE '%Gamestop';
+
+-- Query 4
+SELECT SalesID, Retailer.RetailerID, Retailer_region, Product_Inventory_Amt, Units_Sold
+FROM Sales, Retailer, Products
+WHERE Sales.RetailerID = Retailer.RetailerID
+AND Retailer.RetailerID = Products.RetailerID
+AND Retailer_Region like '%West';
+
+-- Query 5
+SELECT Manufacturer.ManufacturerID, Manufacturer_Name, department_Manager_Name, Department_type, ProjectManagement
+FROM Manufacturer, Departments, InfoSystem
+WHERE Manufacturer.ManufacturerID = Departments.ManufacturerID
+AND Departments.DepartmentID = InfoSystem.DepartmentID
+AND Department_Type like '%Information Systems';
