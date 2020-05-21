@@ -228,7 +228,7 @@ INSERT INTO InfoSystem VALUES (2505, 'IT security');
 INSERT INTO Employees VALUES (2001, 2501, 'Jeff Hoeffrey', 101365, 'Programmer', '2017-05-12', 'Full Time', 2001);
 INSERT INTO Employees VALUES (2002, 2503, 'Mandy Cortez', 87655, 'Consultant',  '2018-03-15', 'Full Time', 2002);
 INSERT INTO Employees VALUES (2003, 2502, 'Johnathan Trumes', 55374, 'Consultant', '2019-01-26', 'Part Time', 2002);
-INSERT INTO Employees VALUES (2005, 2505, 'Winnie Dapuh', 75194, 'Architect', '2019-12-26', 'Intership', 2005);
+INSERT INTO Employees VALUES (2005, 2505, 'Winnie Dapuh', 75194, 'Architect', '2019-12-26', 'Internship', 2005);
 INSERT INTO Employees VALUES (2004, 2504, 'Andrea Rudio', 86164, 'Analyst', '2018-12-26', 'Contract', 2005);
 
 
@@ -262,7 +262,7 @@ WHERE (COGS BETWEEN 3500 AND 5400);
 -- Query 2
 SELECT Products.ProductID, Units_sold, Product_Type, Genre
 FROM Products, VideoGame
-WHERE Product_Type = 'Video Game' AND Products.ProductID = videogame.ProductID;
+WHERE Product_Type = 'Video Game' AND Products.ProductID = Videogame.ProductID;
 
 -- Query 3 
 SELECT Customer.customerID, First_Name, SalesID, Retailer.RetailerID, Retailer_Name
